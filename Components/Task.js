@@ -1,15 +1,18 @@
 import React from "react";
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native"
 
-export default function Task({text}){
+export default function Task({text, completedTask, idx}){
+    // console.log(text, key);
     return (
-        <View style={Styles.item}>
-            <View style={Styles.itemLeft}>
-                <TouchableOpacity style={Styles.square}></TouchableOpacity>
-                <Text styl={Styles.itemText}>{text}</Text>
+        <TouchableOpacity onPress={() => completedTask(idx)}>
+            <View style={Styles.item}>
+                <View style={Styles.itemLeft}>
+                    <TouchableOpacity style={Styles.square}></TouchableOpacity>
+                    <Text styl={Styles.itemText}>{text}</Text>
+                </View>
+                <View style={Styles.circular} onC></View>
             </View>
-            <View style={Styles.circular}></View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

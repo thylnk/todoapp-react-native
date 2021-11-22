@@ -1,23 +1,36 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, View, TouchableOpacity, Keyboard, ScrollView } from 'react-native';
 import Task from './Components/Task';
 
 export default function App() {
   const [task, setTask] = useState("");
+  const [taskItems, setTaskItems] = useState([]);
   const handleAddTask = () => {
-    console.log(task);
+    Keyboard.dismiss();
+    setTaskItems([...taskItems,task]);
+    setTask("");
+  }
+
+  const completedTask = (index) => {
+    let itemsCopy = [...taskItems];
+    itemsCopy.splice(index, 1);
+    setTaskItems(itemsCopy);
   }
   return (
+    
     <View style={styles.container}>
       
       <View style={styles.tasksWrapper}>
         <Text style={styles.sectionTitle}>Today's tasks</Text>
-        <View style={styles.items}>
-          <Task text={'Task 1'}></Task>
-          <Task text={'Task 2'}></Task>
-          <Task text={'Task 3'}></Task>
-
-        </View>
+        <ScrollView style={styles.items}>
+          {taskItems.length > 0 && (
+            taskItems.map((item, index) => {
+              return (
+                <Task text={item} completedTask={completedTask} key={index} idx = {index}></Task>
+              )
+            })
+          )}
+        </ScrollView>
       </View>
 
       {/* Write a task */}
@@ -47,13 +60,16 @@ const styles = StyleSheet.create({
   tasksWrapper: {
     paddingTop: 80,
     paddingHorizontal: 20,
+    height: "85%",
   },
   sectionTitle: {
     fontSize: 24,
     fontWeight: 'bold'
   },
   items: {
+    
     marginTop: 30,
+    overflow: "scroll",
   },
    writeTaskWrapper: {
     position: 'absolute',
